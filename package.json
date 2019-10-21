@@ -1,0 +1,17 @@
+{
+  "name": "@ecamdere/fm-log_consumer",
+  "version": "0.0.1",
+  "description": "Log consumer/subscriber",
+  "main": "./src/app.js",
+  "scripts": {
+    "dev": "NODE_ENV=dev node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Emre CAMDERE <cemre79@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.5.5",
+    "dotenv": "^8.2.0"
+  }
+}
