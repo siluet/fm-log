@@ -3,7 +3,15 @@ require('dotenv').config();
 const amqp = require('amqplib');
 const { handlerBoth } = require('./handlers');
 
-let conn, channel;
+let conn,
+  channel;
+
+
+function validateTopic(topic) {
+  /** @TODO: pattern can be improved */
+  const pattern = new RegExp('^([a-z#.*]+)$');
+  return pattern.test(topic);
+}
 
 
 function getTopics() {
@@ -15,19 +23,7 @@ function getTopics() {
   } else {
     topics = process.env.LISTEN ? process.env.LISTEN.split(' ') : [];
   }
-  return topics.filter(topic => topic && validateTopic(topic));
-}
-
-
-function validateTopic(topic) {
-  /** @TODO: pattern can be improved */
-  const pattern = new RegExp("^([a-z\#\.\*]+)$");
-  return pattern.test(topic);
-}
-
-
-function getQueueName(topic) {
-  return `logs_${topic.replace('#', 'x_x').replace('.', '_').replace(/\*/g, 'x')}`;
+  return topics.filter((topic) => topic && validateTopic(topic));
 }
 
 
@@ -47,7 +43,7 @@ async function consume(topics, messageHandler) {
   const exchange = 'platform_logs';
 
   channel.assertExchange(exchange, 'topic', {
-    durable: false
+    durable: false,
   });
 
   const queue = await channel.assertQueue('', {
@@ -63,11 +59,10 @@ async function consume(topics, messageHandler) {
   channel.consume(queue.queue, (msg) => {
     messageHandler(msg);
   }, {
-    noAck: true
+    noAck: true,
   });
 
 }
-
 
 
 const topics = getTopics();

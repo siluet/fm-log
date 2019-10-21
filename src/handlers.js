@@ -9,9 +9,10 @@ const handlerConsole = (msg) => {
 let writer = null;
 const handlerFile = (msg) => {
   if (writer === null) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     writer = fs.createWriteStream(path.join(__dirname, '../', 'logs.log'), {
       flags: 'a',
-      encoding: 'utf8'
+      encoding: 'utf8',
     });
   }
   writer.write(`[${new Date().toISOString()}] ${msg.fields.routingKey}: ${msg.content.toString()}\n`);
