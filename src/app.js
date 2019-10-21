@@ -1,7 +1,7 @@
+require('make-promises-safe');
 require('dotenv').config();
 const amqp = require('amqplib');
-const fs = require('fs');
-const path = require('path');
+const { handlerBoth } = require('./handlers');
 
 let conn, channel;
 
@@ -69,28 +69,6 @@ async function consume(topics, messageHandler) {
 }
 
 
-const messageHandlerConsole = (msg) => {
-  console.log(`[${new Date().toISOString()}] ${msg.fields.routingKey}: ${msg.content.toString()}`);
-};
-
-
-let writer = null;
-const messageHandlerFile = (msg) => {
-  if (writer === null) {
-    writer = fs.createWriteStream(path.join(__dirname, '../', 'logs.log'), {
-      flags: 'a',
-      encoding: 'utf8'
-    });
-  }
-  writer.write(`[${new Date().toISOString()}] ${msg.fields.routingKey}: ${msg.content.toString()}\n`);
-};
-
-
-const messageHandlerBoth = (msg) => {
-  messageHandlerConsole(msg);
-  messageHandlerFile(msg);
-};
-
 
 const topics = getTopics();
 if (!topics || topics.length === 0) {
@@ -98,4 +76,4 @@ if (!topics || topics.length === 0) {
   process.exit(1);
 }
 
-consume(topics, messageHandlerBoth);
+consume(topics, handlerBoth);
