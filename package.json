@@ -23,5 +23,9 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.20.0",
     "eslint-plugin-security": "^1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/siluet/fm-log.git"
   }
 }
