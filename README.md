@@ -29,15 +29,9 @@ or they can be specified by env variables:
 `LISTEN="gateway.warning gateway.info" npm run start`
 
 ## Installation
-
-.env file must be added before starting. Existing .env.dist file must be renamed as .env with correct values.
-
-* for dev env:
-```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
-```
-
-* for prod env:
-```bash
-$ docker-compose up --build
-```
+1. Install the dependencies by running `$ npm install`.
+1. Make sure the Rabbitmq is running.
+1. Rename/Copy .env.dist file as .env and alter the config values with actual ones.
+1. 
+    - On development env, start the server by running `$ npm run dev` from the root of the project.
+    - On prod env, start the server by running `$ npm run start` from the root of the project.
